@@ -1,1 +1,97 @@
-/* This file is mostly for future expansion, relying on style.css and Tailwind utilities for now. */
+/* Custom styles for the modern dashboard layout */
+
+/* Main Layout */
+.dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: hsl(var(--background));
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    z-index: 20;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-item {
+    @apply flex items-center px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer;
+}
+
+.sidebar-item:hover {
+    @apply bg-gray-100 dark:bg-gray-800;
+}
+
+.sidebar-item.active {
+    @apply bg-[hsl(var(--accent))] text-white shadow-md font-semibold;
+}
+
+.sidebar-item.active:hover {
+    @apply bg-[hsl(var(--accent-hue),_70%,_40%)];
+}
+
+/* Content Area */
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+/* Mobile Sidebar Handling */
+@media (max-width: 1023px) {
+    .sidebar {
+        position: fixed;
+        height: 100%;
+        transform: translateX(-100%);
+    }
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    .main-content {
+        padding-top: 5rem; /* Space for fixed navbar */
+    }
+}
+
+/* Navbar Styles */
+.top-navbar {
+    @apply bg-white dark:bg-card shadow-lg sticky top-0 z-30;
+}
+
+/* Profile Dropdown */
+.profile-dropdown-menu {
+    @apply absolute right-0 mt-2 w-64 rounded-xl shadow-2xl bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none p-4;
+}
+
+.profile-dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid white; /* Match background */
+}
+.dark .profile-dropdown-menu::before {
+    border-bottom: 8px solid hsl(var(--card));
+}
+
+/* Status Filter Dropdown */
+.status-filter-dropdown {
+    @apply absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none p-2;
+}
+
+/* Backdrop for mobile menu */
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    display: none;
+}
