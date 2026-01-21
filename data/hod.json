@@ -1,0 +1,9 @@
+[
+  {
+    "id": "H001",
+    "name": "Prof. Suresh K",
+    "email": "suresh.k@college.edu",
+    "password": "hodpass",
+    "dept": "CSE"
+  }
+]

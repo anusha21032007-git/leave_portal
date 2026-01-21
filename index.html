@@ -1,13 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dyad-generated-app</title>
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Leave & OD Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center p-4">
+    <div class="w-full max-w-md card-shadow">
+        <h1 class="text-4xl font-extrabold text-[hsl(var(--primary))] dark:text-white mb-4 text-center">
+            Leave & OD Portal
+        </h1>
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 text-center">
+            Select your role to log in.
+        </p>
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+        <div class="space-y-4">
+            <a href="pages/student-login.html" class="block w-full btn-primary py-3 text-lg">
+                Student Login
+            </a>
+            <a href="pages/teacher-login.html" class="block w-full btn-primary py-3 text-lg">
+                Teacher Login
+            </a>
+            <a href="pages/hod-login.html" class="block w-full btn-primary py-3 text-lg">
+                HOD Login
+            </a>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+</body>
 </html>

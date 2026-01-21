@@ -1,0 +1,16 @@
+[
+  {
+    "id": "T001",
+    "name": "Dr. Priya R",
+    "email": "priya.r@college.edu",
+    "password": "teacherpass",
+    "dept": "CSE"
+  },
+  {
+    "id": "T002",
+    "name": "Mr. Karthik S",
+    "email": "karthik.s@college.edu",
+    "password": "teacherpass",
+    "dept": "CSE"
+  }
+]

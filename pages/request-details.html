@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Details | Leave Portal</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <header class="bg-white dark:bg-card shadow-md sticky top-0 z-10">
+        <div class="container-layout flex justify-between items-center py-4">
+            <h1 class="text-2xl font-bold text-[hsl(var(--accent))]">Request Details</h1>
+            <button id="back-btn" class="btn-secondary text-sm">Back to Dashboard</button>
+        </div>
+    </header>
+
+    <main class="container-layout mt-8">
+        <div class="w-full max-w-4xl mx-auto card-shadow">
+            <div id="request-content">
+                <h2 class="text-3xl font-bold mb-4 text-[hsl(var(--primary))] dark:text-white">Request <span id="detail-request-id"></span></h2>
+                
+                <div id="status-badge-container" class="mb-6"></div>
+
+                <!-- Request Info Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 border-b pb-4 mb-4">
+                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Student Name:</span> <span id="detail-student-name"></span></p>
+                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Reg No:</span> <span id="detail-student-regno"></span></p>
+                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Department:</span> <span id="detail-dept"></span></p>
+                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Request Type:</span> <span id="detail-request-type"></span></p>
+                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Date Range:</span> <span id="detail-date-range"></span></p>
+                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">No. of Days:</span> <span id="detail-no-of-days"></span></p>
+                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Applied On:</span> <span id="detail-applied-date"></span></p>
+                </div>
+
+                <!-- Reason -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2 text-[hsl(var(--primary))] dark:text-white">Reason for Request</h3>
+                    <p id="detail-reason" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border dark:border-gray-700"></p>
+                </div>
+
+                <!-- Teacher Action History -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2 text-[hsl(var(--primary))] dark:text-white">Teacher Action</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Action Date: <span id="detail-teacher-action-date">N/A</span></p>
+                    <p id="detail-teacher-remark" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border dark:border-gray-700 italic text-gray-600 dark:text-gray-400">No remark provided.</p>
+                </div>
+
+                <!-- HOD Action History -->
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-2 text-[hsl(var(--primary))] dark:text-white">HOD Action</h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Action Date: <span id="detail-hod-action-date">N/A</span></p>
+                    <p id="detail-hod-remark" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border dark:border-gray-700 italic text-gray-600 dark:text-gray-400">No remark provided.</p>
+                </div>
+
+                <!-- Action Panel (Visible only to Teacher/HOD when pending) -->
+                <div id="action-panel" class="mt-8 pt-6 border-t dark:border-gray-700 hidden">
+                    <h3 class="text-2xl font-bold mb-4 text-red-600 dark:text-red-400" id="action-title"></h3>
+                    
+                    <form id="action-form" class="space-y-4">
+                        <div>
+                            <label for="remark" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Remark (Required for Reject/Forward)</label>
+                            <textarea id="remark" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow"></textarea>
+                        </div>
+                        
+                        <div id="action-buttons" class="flex flex-wrap gap-4">
+                            <!-- Buttons injected by JS -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+    <script type="module">
+        import { sessionGuard } from '../js/auth.js';
+        import { getRequestById } from '../js/storage.js';
+        import { formatDate, renderStatusBadge, showToast, redirect } from '../js/utils.js';
+        import { handleTeacherAction } from '../js/teacher.js';
+        import { handleHodAction } from '../js/hod.js';
+
+        const SHORT_REQUEST_DAYS = 2;
+
+        // 1. Session Guard and User Check
+        // We use null for requiredRole here because all logged-in users (student, teacher, hod) should be able to view details.
+        const user = sessionGuard(null, '../index.html');
+        if (!user) {
+            // Redirection handled by sessionGuard
+            throw new Error("User not logged in.");
+        }
+
+        // Determine back button path
+        const backPath = user.role === 'student' ? 'student-dashboard.html' : 
+                         user.role === 'teacher' ? 'teacher-dashboard.html' : 
+                         'hod-dashboard.html';
+        document.getElementById('back-btn').addEventListener('click', () => redirect(backPath));
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const requestId = urlParams.get('id');
+
+            if (!requestId) {
+                showToast('No request ID provided.', 'error');
+                redirect(backPath);
+                return;
+            }
+
+            const request = getRequestById(requestId);
+
+            if (!request) {
+                showToast('Request not found.', 'error');
+                redirect(backPath);
+                return;
+            }
+
+            renderRequestDetails(request);
+            renderActionPanel(request, user);
+        });
+
+        function renderRequestDetails(request) {
+            document.getElementById('detail-request-id').textContent = request.requestId;
+            document.getElementById('status-badge-container').innerHTML = renderStatusBadge(request.status);
+            document.getElementById('detail-student-name').textContent = request.studentName;
+            document.getElementById('detail-student-regno').textContent = request.studentRegNo;
+            document.getElementById('detail-dept').textContent = request.dept;
+            document.getElementById('detail-request-type').textContent = request.requestType;
+            document.getElementById('detail-date-range').textContent = `${formatDate(request.fromDate)} to ${formatDate(request.toDate)}`;
+            document.getElementById('detail-no-of-days').textContent = request.noOfDays;
+            document.getElementById('detail-applied-date').textContent = formatDate(request.appliedDate);
+            document.getElementById('detail-reason').textContent = request.reason;
+
+            // Remarks
+            const teacherRemarkEl = document.getElementById('detail-teacher-remark');
+            const hodRemarkEl = document.getElementById('detail-hod-remark');
+            const teacherDateEl = document.getElementById('detail-teacher-action-date');
+            const hodDateEl = document.getElementById('detail-hod-action-date');
+
+            if (request.teacherRemark) {
+                teacherRemarkEl.textContent = request.teacherRemark;
+                teacherRemarkEl.classList.remove('italic', 'text-gray-600', 'dark:text-gray-400');
+            }
+            if (request.teacherActionDate) {
+                teacherDateEl.textContent = formatDate(request.teacherActionDate);
+            }
+
+            if (request.hodRemark) {
+                hodRemarkEl.textContent = request.hodRemark;
+                hodRemarkEl.classList.remove('italic', 'text-gray-600', 'dark:text-gray-400');
+            }
+            if (request.hodActionDate) {
+                hodDateEl.textContent = formatDate(request.hodActionDate);
+            }
+        }
+
+        function renderActionPanel(request, user) {
+            const actionPanel = document.getElementById('action-panel');
+            const actionButtonsContainer = document.getElementById('action-buttons');
+            const actionTitle = document.getElementById('action-title');
+            const remarkInput = document.getElementById('remark');
+
+            actionButtonsContainer.innerHTML = '';
+            actionPanel.classList.add('hidden');
+
+            let buttons = [];
+            let handler;
+            
+            // Only show action panel if the user is Teacher/HOD AND the request is pending their specific approval step
+            if (user.role === 'teacher' && request.status === "Pending Teacher Approval") {
+                actionPanel.classList.remove('hidden');
+                actionTitle.textContent = 'Teacher Action Required';
+                handler = handleTeacherAction;
+                
+                buttons.push({ action: 'reject', text: 'Reject Request', color: 'bg-red-600 hover:bg-red-700' });
+
+                if (request.noOfDays <= SHORT_REQUEST_DAYS) {
+                    buttons.push({ action: 'approve', text: 'Approve Request', color: 'bg-green-600 hover:bg-green-700' });
+                } else {
+                    buttons.push({ action: 'forward', text: 'Forward to HOD', color: 'bg-blue-600 hover:bg-blue-700' });
+                }
+
+            } else if (user.role === 'hod' && request.status === "Forwarded to HOD") {
+                actionPanel.classList.remove('hidden');
+                actionTitle.textContent = 'HOD Final Approval Required';
+                handler = handleHodAction;
+
+                buttons.push({ action: 'reject', text: 'Reject Request', color: 'bg-red-600 hover:bg-red-700' });
+                buttons.push({ action: 'approve', text: 'Final Approve', color: 'bg-green-600 hover:bg-green-700' });
+            }
+
+            buttons.forEach(({ action, text, color }) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.textContent = text;
+                button.className = `px-6 py-3 rounded-xl font-semibold text-white transition-colors shadow-md ${color}`;
+                button.addEventListener('click', () => {
+                    const remark = remarkInput.value;
+                    handler(request.requestId, action, remark);
+                });
+                actionButtonsContainer.appendChild(button);
+            });
+        }
+    </script>
+</body>
+</html>

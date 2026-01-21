@@ -1,0 +1,18 @@
+[
+  {
+    "regNo": "21CS045",
+    "name": "Anusha N",
+    "email": "anu21cs045@gmail.com",
+    "password": "password123",
+    "dept": "CSE",
+    "year": 3
+  },
+  {
+    "regNo": "21CS001",
+    "name": "Bala S",
+    "email": "bala21cs001@gmail.com",
+    "password": "password123",
+    "dept": "CSE",
+    "year": 3
+  }
+]

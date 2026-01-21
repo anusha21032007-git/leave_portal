@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Leave Portal</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <header class="bg-white dark:bg-card shadow-md sticky top-0 z-10">
+        <div class="container-layout flex justify-between items-center py-4">
+            <h1 class="text-2xl font-bold text-[hsl(var(--accent))]">Student Portal</h1>
+            <button id="logout-btn" class="btn-secondary text-sm">Logout</button>
+        </div>
+    </header>
+
+    <main class="container-layout mt-8">
+        <h2 class="text-3xl font-extrabold text-[hsl(var(--primary))] dark:text-white mb-6">Welcome, <span id="student-name"></span></h2>
+
+        <!-- Profile Card -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="card-shadow lg:col-span-1">
+                <h3 class="text-xl font-semibold mb-4 border-b pb-2 dark:border-gray-700">My Profile</h3>
+                <div class="space-y-2 text-sm">
+                    <p><span class="font-medium">Reg No:</span> <span id="student-regno" class="text-gray-600 dark:text-gray-400"></span></p>
+                    <p><span class="font-medium">Department:</span> <span id="student-dept" class="text-gray-600 dark:text-gray-400"></span></p>
+                    <p><span class="font-medium">Year:</span> <span id="student-year" class="text-gray-600 dark:text-gray-400"></span></p>
+                </div>
+            </div>
+            
+            <div class="card-shadow lg:col-span-2 flex flex-col justify-center items-center p-8 bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-gray-700">
+                <p class="text-lg font-medium mb-4 text-gray-700 dark:text-gray-300">Ready to apply for leave or OD?</p>
+                <a href="apply-request.html" class="btn-primary text-lg px-8 py-3">
+                    Apply New Request
+                </a>
+            </div>
+        </div>
+
+        <!-- Request History Table -->
+        <div class="card-shadow overflow-x-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">Request History (<span id="history-count">0</span>)</h3>
+            </div>
+            
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Request ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dates</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied On</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="request-history-body" class="bg-white dark:bg-card divide-y divide-gray-200 dark:divide-gray-700">
+                    <!-- Request rows will be inserted here by JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+    <script type="module">
+        import { sessionGuard, handleLogout } from '../js/auth.js';
+        import { renderStudentDashboard } from '../js/student.js';
+
+        // 1. Session Guard
+        sessionGuard('student', 'student-login.html');
+
+        // 2. Render Dashboard
+        document.addEventListener('DOMContentLoaded', renderStudentDashboard);
+
+        // 3. Logout Handler
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            handleLogout('../index.html');
+        });
+    </script>
+</body>
+</html>

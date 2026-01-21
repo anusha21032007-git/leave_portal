@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOD Login | Leave Portal</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+    <div class="w-full max-w-md card-shadow">
+        <h2 class="text-3xl font-bold text-[hsl(var(--primary))] dark:text-white mb-6 text-center">HOD Login</h2>
+        
+        <form id="login-form" class="space-y-4">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                <input type="email" id="email" name="email" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                <input type="password" id="password" name="password" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+            </div>
+            <button type="submit" class="w-full btn-primary py-3 mt-4">
+                Log In
+            </button>
+        </form>
+        
+        <p class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+            <a href="../index.html" class="text-[hsl(var(--accent))] hover:underline">Back to Home</a>
+        </p>
+    </div>
+
+    <div id="toast-container"></div>
+    <script type="module">
+        import { handleLogin } from '../js/auth.js';
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            handleLogin(email, password, 'hod', 'hod-dashboard.html');
+        });
+    </script>
+</body>
+</html>

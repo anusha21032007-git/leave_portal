@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Request | Leave Portal</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900">
+    <header class="bg-white dark:bg-card shadow-md sticky top-0 z-10">
+        <div class="container-layout flex justify-between items-center py-4">
+            <h1 class="text-2xl font-bold text-[hsl(var(--accent))]">Apply Request</h1>
+            <a href="student-dashboard.html" class="btn-secondary text-sm">Back to Dashboard</a>
+        </div>
+    </header>
+
+    <main class="container-layout mt-8">
+        <div class="w-full max-w-3xl mx-auto card-shadow">
+            <h2 class="text-2xl font-bold mb-6 border-b pb-3 dark:border-gray-700">New Leave / OD Application</h2>
+            
+            <form id="apply-request-form" class="space-y-6">
+                
+                <!-- Request Type -->
+                <div>
+                    <label for="requestType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Request Type</label>
+                    <select id="requestType" name="requestType" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                        <option value="">Select Type</option>
+                        <option value="Leave">Leave</option>
+                        <option value="OD">On Duty (OD)</option>
+                    </select>
+                </div>
+
+                <!-- Date Range -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="fromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From Date</label>
+                        <input type="date" id="fromDate" name="fromDate" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                    </div>
+                    <div>
+                        <label for="toDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To Date</label>
+                        <input type="date" id="toDate" name="toDate" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                    </div>
+                </div>
+
+                <!-- Reason -->
+                <div>
+                    <label for="reason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reason (Required)</label>
+                    <textarea id="reason" name="reason" rows="4" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow"></textarea>
+                </div>
+
+                <button type="submit" class="w-full btn-primary py-3">
+                    Submit Request
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+    <script type="module">
+        import { sessionGuard } from '../js/auth.js';
+        import { initApplyRequestForm } from '../js/student.js';
+
+        // 1. Session Guard
+        sessionGuard('student', 'student-login.html');
+
+        // 2. Initialize Form
+        document.addEventListener('DOMContentLoaded', initApplyRequestForm);
+    </script>
+</body>
+</html>
