@@ -7,8 +7,7 @@ const SHORT_REQUEST_DAYS = 2;
  * Renders the teacher dashboard content.
  */
 export function renderTeacherDashboard() {
-    const user = getCurrentUser();
-    if (!user) return;
+    const user = getCurrentUser() || { name: 'Guest Teacher', dept: 'N/A' };
 
     document.getElementById('teacher-name').textContent = user.name;
     document.getElementById('teacher-dept').textContent = user.dept;
@@ -21,7 +20,9 @@ export function renderTeacherDashboard() {
  * @param {string} dept
  */
 export function renderPendingRequests(dept) {
-    const allRequests = getLeaveRequests();
+    // Only show requests if a real user is logged in (dept is not 'N/A')
+    const allRequests = dept !== 'N/A' ? getLeaveRequests() : [];
+    
     const pendingRequests = allRequests.filter(req => 
         req.dept === dept && 
         req.status === "Pending Teacher Approval"
@@ -71,7 +72,7 @@ export function renderPendingRequests(dept) {
 export function handleTeacherAction(requestId, action, remark) {
     const user = getCurrentUser();
     if (!user) {
-        showToast('Session expired.', 'error');
+        showToast('Session expired. Please log in again.', 'error');
         return false;
     }
 

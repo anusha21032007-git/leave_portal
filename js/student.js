@@ -7,8 +7,7 @@ const SHORT_REQUEST_DAYS = 2;
  * Renders the student dashboard content.
  */
 export function renderStudentDashboard() {
-    const user = getCurrentUser();
-    if (!user) return; // Should be handled by sessionGuard
+    const user = getCurrentUser() || { name: 'Guest Student', regNo: 'N/A', dept: 'N/A', year: 'N/A' };
 
     document.getElementById('student-name').textContent = user.name;
     document.getElementById('student-regno').textContent = user.regNo;
@@ -23,7 +22,8 @@ export function renderStudentDashboard() {
  * @param {string} regNo
  */
 function renderRequestHistory(regNo) {
-    const requests = getLeaveRequests().filter(req => req.studentRegNo === regNo);
+    // Only show requests if a real user is logged in (regNo is not 'N/A')
+    const requests = regNo !== 'N/A' ? getLeaveRequests().filter(req => req.studentRegNo === regNo) : [];
     const tableBody = document.getElementById('request-history-body');
     const historyCount = document.getElementById('history-count');
 
@@ -92,7 +92,7 @@ export function handleApplyRequest(e) {
 
     const user = getCurrentUser();
     if (!user) {
-        showToast('Session expired. Please log in again.', 'error');
+        showToast('Please log in to submit a request.', 'error');
         return;
     }
 
@@ -162,8 +162,11 @@ export function handleApplyRequest(e) {
  */
 export function initApplyRequestForm() {
     const today = getCurrentDate();
-    document.getElementById('fromDate').min = today;
-    document.getElementById('toDate').min = today;
+    const fromDateEl = document.getElementById('fromDate');
+    const toDateEl = document.getElementById('toDate');
+
+    if (fromDateEl) fromDateEl.min = today;
+    if (toDateEl) toDateEl.min = today;
 
     populateRequestTypes(); // Call the new function to load types
 

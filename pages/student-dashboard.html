@@ -66,8 +66,8 @@
         import { sessionGuard, handleLogout } from '../js/auth.js';
         import { renderStudentDashboard } from '../js/student.js';
 
-        // 1. Session Guard
-        sessionGuard('student', 'student-login.html');
+        // 1. Session Guard (Temporarily commented out for development)
+        // sessionGuard('student', 'student-login.html');
 
         // 2. Render Dashboard
         document.addEventListener('DOMContentLoaded', renderStudentDashboard);

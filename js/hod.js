@@ -5,8 +5,7 @@ import { showToast, formatDate, renderStatusBadge, redirect } from './utils.js';
  * Renders the HOD dashboard content.
  */
 export function renderHodDashboard() {
-    const user = getCurrentUser();
-    if (!user) return;
+    const user = getCurrentUser() || { name: 'Guest HOD', dept: 'N/A' };
 
     document.getElementById('hod-name').textContent = user.name;
     document.getElementById('hod-dept').textContent = user.dept;
@@ -19,7 +18,9 @@ export function renderHodDashboard() {
  * @param {string} dept
  */
 export function renderForwardedRequests(dept) {
-    const allRequests = getLeaveRequests();
+    // Only show requests if a real user is logged in (dept is not 'N/A')
+    const allRequests = dept !== 'N/A' ? getLeaveRequests() : [];
+
     const forwardedRequests = allRequests.filter(req => 
         req.dept === dept && 
         req.status === "Forwarded to HOD"
@@ -67,7 +68,7 @@ export function renderForwardedRequests(dept) {
 export function handleHodAction(requestId, action, remark) {
     const user = getCurrentUser();
     if (!user) {
-        showToast('Session expired.', 'error');
+        showToast('Session expired. Please log in again.', 'error');
         return false;
     }
 
