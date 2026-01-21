@@ -6,6 +6,8 @@
     <title>Student Dashboard | Leave Portal</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <!-- Lucide Icons for modern look -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* Custom styles for icons */
         .icon-size { width: 1.25rem; height: 1.25rem; }
@@ -18,23 +20,37 @@
         <div id="backdrop" class="backdrop lg:hidden"></div>
 
         <!-- Left Sidebar Navigation -->
-        <aside id="sidebar" class="sidebar bg-white dark:bg-card p-4 space-y-6 border-r dark:border-gray-700">
-            <div class="text-2xl font-extrabold text-[hsl(var(--accent))] mb-8">
-                Leave Portal
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div id="sidebar-avatar" class="w-10 h-10 bg-[hsl(var(--accent))] rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">
+                    <span id="sidebar-avatar-initial">S</span>
+                </div>
+                <div class="flex flex-col">
+                    <span id="sidebar-student-name" class="font-bold text-lg text-[hsl(var(--primary))] dark:text-white"></span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">Student Portal</span>
+                </div>
             </div>
             
-            <nav class="space-y-2">
+            <nav class="space-y-2 p-2">
                 <div class="sidebar-item active" data-view="dashboard">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-size mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    <i data-lucide="layout-dashboard" class="icon-size mr-3"></i>
                     <span>Dashboard</span>
                 </div>
-                <div class="sidebar-item" data-view="apply">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-size mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-                    <span>Apply Leave/OD</span>
+                <div class="sidebar-item" data-view="leave-request">
+                    <i data-lucide="calendar-minus" class="icon-size mr-3"></i>
+                    <span>Leave Request</span>
                 </div>
-                <div class="sidebar-item" data-view="history">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-size mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                    <span>Request History</span>
+                <div class="sidebar-item" data-view="od-request">
+                    <i data-lucide="briefcase" class="icon-size mr-3"></i>
+                    <span>OD Request</span>
+                </div>
+                <div class="sidebar-item" data-view="status">
+                    <i data-lucide="list-checks" class="icon-size mr-3"></i>
+                    <span>Request Status</span>
+                </div>
+                <div class="sidebar-item" data-view="profile">
+                    <i data-lucide="user" class="icon-size mr-3"></i>
+                    <span>Profile</span>
                 </div>
             </nav>
         </aside>
@@ -44,191 +60,171 @@
             
             <!-- Top Navbar -->
             <header class="top-navbar">
-                <div class="flex justify-between items-center py-3 px-4 lg:px-0">
+                <div class="container-layout flex justify-between items-center py-3">
                     
                     <!-- Hamburger Menu (Mobile) -->
-                    <button id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                    <button id="menu-toggle" class="lg:hidden icon-btn">
+                        <i data-lucide="menu" class="icon-size"></i>
                     </button>
 
-                    <h2 class="text-2xl font-bold text-[hsl(var(--primary))] dark:text-white" id="main-title">Dashboard</h2>
+                    <h2 class="text-xl font-semibold text-[hsl(var(--primary))] dark:text-white flex-grow ml-4 lg:ml-0" id="main-title">Dashboard Overview</h2>
                     
-                    <!-- Profile Section -->
-                    <div class="relative">
-                        <button id="profile-toggle" class="flex items-center space-x-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                            <div class="w-8 h-8 bg-[hsl(var(--accent))] rounded-full flex items-center justify-center text-white font-semibold text-sm">S</div>
-                            <span id="profile-name-nav" class="hidden md:inline font-medium text-gray-700 dark:text-gray-300"></span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    <!-- Action Icons -->
+                    <div class="flex items-center space-x-3">
+                        
+                        <!-- Theme Toggle -->
+                        <button id="theme-toggle" class="icon-btn">
+                            <i data-lucide="sun" class="icon-size"></i>
                         </button>
 
-                        <!-- Profile Dropdown Menu -->
-                        <div id="profile-dropdown-menu" class="profile-dropdown-menu hidden">
-                            <div class="text-sm space-y-3">
-                                <div class="border-b pb-3 mb-3 dark:border-gray-700">
-                                    <p class="font-bold text-lg" id="profile-detail-name"></p>
-                                    <p class="text-gray-500" id="profile-detail-email"></p>
-                                </div>
-                                <p><span class="font-medium">Reg No:</span> <span id="profile-detail-regno" class="text-gray-600 dark:text-gray-400"></span></p>
-                                <p><span class="font-medium">Department:</span> <span id="profile-detail-dept" class="text-gray-600 dark:text-gray-400"></span></p>
-                                <p><span class="font-medium">Year:</span> <span id="profile-detail-year" class="text-gray-600 dark:text-gray-400"></span></p>
-                                <button id="logout-btn" class="w-full mt-4 btn-secondary text-sm">Logout</button>
-                            </div>
-                        </div>
+                        <!-- Notifications -->
+                        <button class="icon-btn">
+                            <i data-lucide="bell" class="icon-size"></i>
+                        </button>
+
+                        <!-- Logout -->
+                        <button id="logout-btn" class="icon-btn text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+                            <i data-lucide="log-out" class="icon-size"></i>
+                        </button>
                     </div>
                 </div>
             </header>
 
             <!-- Dynamic Content Sections -->
-            <div class="mt-8">
+            <div class="container-layout py-8">
                 
-                <!-- 1. Dashboard Summary Section -->
+                <!-- 1. Dashboard Summary Section (Default View) -->
                 <section id="dashboard-section" class="content-section">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                        <!-- Profile Summary Card -->
-                        <div class="card-shadow lg:col-span-1 bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-gray-700">
-                            <h3 class="text-xl font-semibold mb-4 border-b pb-2 dark:border-gray-700">My Profile Summary</h3>
-                            <div class="space-y-2 text-sm">
-                                <p><span class="font-medium">Name:</span> <span id="summary-student-name" class="text-gray-700 dark:text-gray-300"></span></p>
-                                <p><span class="font-medium">Reg No:</span> <span id="summary-student-regno" class="text-gray-600 dark:text-gray-400"></span></p>
-                                <p><span class="font-medium">Department:</span> <span id="summary-student-dept" class="text-gray-600 dark:text-gray-400"></span></p>
-                                <p><span class="font-medium">Year:</span> <span id="summary-student-year" class="text-gray-600 dark:text-gray-400"></span></p>
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Placeholder Stat Cards -->
+                        <div class="card-shadow p-5 border-l-4 border-blue-500">
+                            <p class="text-sm text-gray-500">Total Requests</p>
+                            <p class="text-3xl font-bold mt-1">12</p>
                         </div>
-                        
-                        <!-- Stats Cards -->
-                        <div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div class="card-shadow text-center p-4 border-l-4 border-gray-400">
-                                <p class="text-xs uppercase text-gray-500">Total Requests</p>
-                                <p id="stat-total" class="text-3xl font-bold mt-1 text-[hsl(var(--primary))]">0</p>
-                            </div>
-                            <div class="card-shadow text-center p-4 border-l-4 border-yellow-500">
-                                <p class="text-xs uppercase text-gray-500">Pending</p>
-                                <p id="stat-pending" class="text-3xl font-bold mt-1 text-yellow-600">0</p>
-                            </div>
-                            <div class="card-shadow text-center p-4 border-l-4 border-green-500">
-                                <p class="text-xs uppercase text-gray-500">Approved</p>
-                                <p id="stat-approved" class="text-3xl font-bold mt-1 text-green-600">0</p>
-                            </div>
-                            <div class="card-shadow text-center p-4 border-l-4 border-red-500">
-                                <p class="text-xs uppercase text-gray-500">Rejected</p>
-                                <p id="stat-rejected" class="text-3xl font-bold mt-1 text-red-600">0</p>
-                            </div>
+                        <div class="card-shadow p-5 border-l-4 border-yellow-500">
+                            <p class="text-sm text-gray-500">Pending</p>
+                            <p class="text-3xl font-bold mt-1 text-yellow-600">3</p>
+                        </div>
+                        <div class="card-shadow p-5 border-l-4 border-green-500">
+                            <p class="text-sm text-gray-500">Approved</p>
+                            <p class="text-3xl font-bold mt-1 text-green-600">8</p>
+                        </div>
+                        <div class="card-shadow p-5 border-l-4 border-red-500">
+                            <p class="text-sm text-gray-500">Rejected</p>
+                            <p class="text-3xl font-bold mt-1 text-red-600">1</p>
                         </div>
                     </div>
                     
-                    <!-- Quick Access to Apply -->
-                    <div class="card-shadow flex flex-col items-center p-8 bg-white dark:bg-card border border-gray-200 dark:border-gray-700">
-                        <p class="text-lg font-medium mb-4 text-gray-700 dark:text-gray-300">Need to submit a new request?</p>
-                        <button onclick="document.querySelector('.sidebar-item[data-view=\'apply\']').click()" class="btn-primary text-lg px-8 py-3">
-                            Apply New Request
-                        </button>
+                    <div class="mt-8 card-shadow p-6">
+                        <h3 class="text-xl font-semibold mb-4">Quick Actions</h3>
+                        <div class="flex flex-wrap gap-4">
+                            <button onclick="document.querySelector('.sidebar-item[data-view=\'leave-request\']').click()" class="btn-primary px-6 py-2">Apply Leave</button>
+                            <button onclick="document.querySelector('.sidebar-item[data-view=\'od-request\']').click()" class="btn-secondary px-6 py-2">Apply OD</button>
+                        </div>
                     </div>
                 </section>
 
-                <!-- 2. Apply Leave/OD Section -->
-                <section id="apply-section" class="content-section hidden">
-                    <div class="w-full max-w-3xl mx-auto card-shadow">
-                        <h3 class="text-2xl font-bold mb-6 border-b pb-3 dark:border-gray-700">New Leave / OD Application</h3>
-                        
-                        <form id="apply-request-form" class="space-y-6">
-                            
-                            <!-- Request Type -->
-                            <div>
-                                <label for="requestType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Request Type</label>
-                                <select id="requestType" name="requestType" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
-                                    <option value="">Select Type</option>
-                                    <!-- Options populated dynamically by js/student-dashboard.js -->
-                                </select>
-                            </div>
-
-                            <!-- Date Range & Days -->
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div>
-                                    <label for="fromDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From Date</label>
-                                    <input type="date" id="fromDate" name="fromDate" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
-                                </div>
-                                <div>
-                                    <label for="toDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To Date</label>
-                                    <input type="date" id="toDate" name="toDate" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
-                                </div>
-                                <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg flex flex-col justify-center items-center">
-                                    <p class="text-xs font-medium text-gray-500 dark:text-gray-300">No. of Days</p>
-                                    <p id="noOfDays" class="text-2xl font-bold text-[hsl(var(--accent))]">0</p>
-                                </div>
-                            </div>
-
-                            <!-- Reason -->
-                            <div>
-                                <label for="reason" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Reason (Required)</label>
-                                <textarea id="reason" name="reason" rows="4" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow"></textarea>
-                            </div>
-
-                            <div class="flex justify-end space-x-4 pt-4">
-                                <button type="button" onclick="document.getElementById('apply-request-form').reset(); document.getElementById('noOfDays').textContent = '0';" class="btn-secondary">
-                                    Cancel
-                                </button>
-                                <button type="submit" class="btn-primary">
-                                    Submit Request
-                                </button>
-                            </div>
-                        </form>
+                <!-- 2. Leave Request Section -->
+                <section id="leave-request-section" class="content-section hidden">
+                    <div class="w-full max-w-3xl mx-auto card-shadow p-8">
+                        <h3 class="text-2xl font-bold mb-6">Leave Application Form</h3>
+                        <p class="text-gray-500">Form content goes here...</p>
                     </div>
                 </section>
 
-                <!-- 3. Request History Section -->
-                <section id="history-section" class="content-section hidden">
-                    <div class="card-shadow overflow-x-auto">
+                <!-- 3. OD Request Section -->
+                <section id="od-request-section" class="content-section hidden">
+                    <div class="w-full max-w-3xl mx-auto card-shadow p-8">
+                        <h3 class="text-2xl font-bold mb-6">On Duty (OD) Application Form</h3>
+                        <p class="text-gray-500">Form content goes here...</p>
+                    </div>
+                </section>
+
+                <!-- 4. Request Status Section -->
+                <section id="status-section" class="content-section hidden">
+                    <div class="card-shadow p-8">
+                        <h3 class="text-2xl font-bold mb-6">My Request History</h3>
+                        <p class="text-gray-500">Table content goes here...</p>
+                    </div>
+                </section>
+
+                <!-- 5. Profile Section (Detailed Card) -->
+                <section id="profile-section" class="content-section hidden">
+                    <div class="w-full max-w-4xl mx-auto card-shadow p-8">
                         
-                        <!-- Filters and Search -->
-                        <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
-                            <h3 class="text-xl font-semibold">Request History (<span id="history-count">0</span>)</h3>
-                            
-                            <div class="flex space-x-3 w-full md:w-auto">
-                                <!-- Search Bar -->
-                                <div class="relative flex-grow">
-                                    <input type="text" id="history-search" placeholder="Search by ID or Type..." class="w-full p-2 pl-10 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-1/2 transform -translate-y-1/2 icon-size text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                                </div>
-                                
-                                <!-- Status Filter Dropdown -->
-                                <select id="status-filter" class="p-2 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-700 dark:text-white">
-                                    <option value="">All Statuses</option>
-                                    <option value="Pending Teacher Approval">Pending Teacher</option>
-                                    <option value="Forwarded to HOD">Forwarded to HOD</option>
-                                    <option value="Approved by Teacher">Approved by Teacher</option>
-                                    <option value="Approved by HOD">Approved by HOD</option>
-                                    <option value="Rejected by Teacher">Rejected by Teacher</option>
-                                    <option value="Rejected by HOD">Rejected by HOD</option>
-                                </select>
+                        <!-- Header and Avatar -->
+                        <div class="flex items-center border-b pb-6 mb-6 dark:border-gray-700">
+                            <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 text-3xl font-bold mr-4">
+                                <i data-lucide="user" class="w-8 h-8"></i>
+                            </div>
+                            <div>
+                                <h3 id="profile-card-name" class="text-3xl font-extrabold text-[hsl(var(--primary))] dark:text-white"></h3>
+                                <p class="text-lg text-gray-600 dark:text-gray-400">Student Profile Details</p>
                             </div>
                         </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-800">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Request ID</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dates</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied On</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="request-history-body" class="bg-white dark:bg-card divide-y divide-gray-200 dark:divide-gray-700">
-                                    <!-- Request rows will be inserted here by JS -->
-                                </tbody>
-                            </table>
+
+                        <!-- Profile Details Grid -->
+                        <div class="profile-card-grid">
+                            
+                            <div class="profile-field">
+                                <span class="profile-label">Register Number</span>
+                                <span id="profile-card-regno" class="profile-value"></span>
+                            </div>
+                            <div class="profile-field">
+                                <span class="profile-label">Academic Year</span>
+                                <span id="profile-card-year" class="profile-value"></span>
+                            </div>
+                            
+                            <div class="profile-field">
+                                <span class="profile-label">Current Semester</span>
+                                <span id="profile-card-semester" class="profile-value"></span>
+                            </div>
+                            <div class="profile-field">
+                                <span class="profile-label">Status</span>
+                                <span id="profile-card-status" class="badge badge-approved">Active</span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="profile-label">Email Address</span>
+                                <span id="profile-card-email" class="profile-value"></span>
+                            </div>
+                            <div class="profile-field">
+                                <span class="profile-label">Mobile Number</span>
+                                <span id="profile-card-mobile" class="profile-value"></span>
+                            </div>
+
+                            <div class="profile-field">
+                                <span class="profile-label">Class Tutor</span>
+                                <span id="profile-card-tutor" class="profile-value"></span>
+                            </div>
+                            <div class="profile-field">
+                                <span class="profile-label">Total Leaves Taken (Current Year)</span>
+                                <span id="profile-card-leaves-taken" class="profile-value text-red-600 dark:text-red-400"></span>
+                            </div>
                         </div>
                     </div>
                 </section>
 
             </div>
+            
+            <!-- Footer -->
+            <footer class="py-4 border-t dark:border-gray-800 mt-auto">
+                <div class="container-layout text-center text-sm text-gray-500 dark:text-gray-400">
+                    © 2026 CSE Department. All rights reserved.
+                </div>
+            </footer>
         </div>
     </div>
 
     <div id="toast-container"></div>
+    <script type="module">
+        // Initialize Lucide icons after DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
     <script type="module" src="../js/student-dashboard.js"></script>
 </body>
 </html>

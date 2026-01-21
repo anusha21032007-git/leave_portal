@@ -9,15 +9,19 @@
 
 /* Sidebar Styles */
 .sidebar {
-    width: 280px;
+    width: 260px; /* Fixed width */
     flex-shrink: 0;
-    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
     z-index: 20;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    @apply bg-white dark:bg-card border-r dark:border-gray-800 shadow-xl;
+}
+
+.sidebar-header {
+    @apply flex items-center p-4 border-b dark:border-gray-800;
 }
 
 .sidebar-item {
-    @apply flex items-center px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer;
+    @apply flex items-center px-4 py-3 mx-3 rounded-xl text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer;
 }
 
 .sidebar-item:hover {
@@ -35,8 +39,30 @@
 /* Content Area */
 .main-content {
     flex-grow: 1;
-    padding: 2rem;
+    padding: 0; /* Padding handled by container-layout inside */
     transition: margin-left 0.3s ease-in-out;
+}
+
+/* Top Navbar Styles */
+.top-navbar {
+    @apply bg-white dark:bg-card shadow-md sticky top-0 z-30;
+}
+
+/* Profile Card Styling */
+.profile-card-grid {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4;
+}
+
+.profile-field {
+    @apply flex flex-col;
+}
+
+.profile-label {
+    @apply text-sm font-medium text-gray-500 dark:text-gray-400;
+}
+
+.profile-value {
+    @apply text-base font-semibold text-[hsl(var(--primary))] dark:text-white;
 }
 
 /* Mobile Sidebar Handling */
@@ -49,39 +75,6 @@
     .sidebar.open {
         transform: translateX(0);
     }
-    .main-content {
-        padding-top: 5rem; /* Space for fixed navbar */
-    }
-}
-
-/* Navbar Styles */
-.top-navbar {
-    @apply bg-white dark:bg-card shadow-lg sticky top-0 z-30;
-}
-
-/* Profile Dropdown */
-.profile-dropdown-menu {
-    @apply absolute right-0 mt-2 w-64 rounded-xl shadow-2xl bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none p-4;
-}
-
-.profile-dropdown-menu::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: 12px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid white; /* Match background */
-}
-.dark .profile-dropdown-menu::before {
-    border-bottom: 8px solid hsl(var(--card));
-}
-
-/* Status Filter Dropdown */
-.status-filter-dropdown {
-    @apply absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none p-2;
 }
 
 /* Backdrop for mobile menu */
@@ -94,4 +87,9 @@
     background: rgba(0, 0, 0, 0.5);
     z-index: 10;
     display: none;
+}
+
+/* Utility for icons */
+.icon-btn {
+    @apply p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
 }
