@@ -56,13 +56,9 @@
 
     <div id="toast-container"></div>
     <script type="module">
-        import { sessionGuard } from '../js/auth.js';
         import { initApplyRequestForm } from '../js/student.js';
 
-        // 1. Session Guard
-        sessionGuard('student', 'student-login.html');
-
-        // 2. Initialize Form
+        // 1. Initialize Form
         document.addEventListener('DOMContentLoaded', initApplyRequestForm);
     </script>
 </body>

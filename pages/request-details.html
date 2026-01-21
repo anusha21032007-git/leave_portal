@@ -73,7 +73,7 @@
 
     <div id="toast-container"></div>
     <script type="module">
-        import { sessionGuard } from '../js/auth.js';
+        import { getCurrentUser } from '../js/storage.js'; // Use getCurrentUser from storage
         import { getRequestById } from '../js/storage.js';
         import { formatDate, renderStatusBadge, showToast, redirect } from '../js/utils.js';
         import { handleTeacherAction } from '../js/teacher.js';
@@ -81,24 +81,21 @@
 
         const SHORT_REQUEST_DAYS = 2;
 
-        // 1. Session Guard and User Check
-        // We use null for requiredRole here because all logged-in users (student, teacher, hod) should be able to view details.
-        const user = sessionGuard(null, '../index.html');
-        if (!user) {
-            // Redirection handled by sessionGuard
-            throw new Error("User not logged in.");
-        }
-
-        // Determine back button path
-        const backPath = user.role === 'student' ? 'student-dashboard.html' : 
-                         user.role === 'teacher' ? 'teacher-dashboard.html' : 
-                         'hod-dashboard.html';
-        document.getElementById('back-btn').addEventListener('click', () => redirect(backPath));
-
-
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const requestId = urlParams.get('id');
+            
+            // Use a placeholder user if none is logged in, to allow viewing details
+            const user = getCurrentUser() || { role: 'guest' }; 
+
+            // Determine back button path based on the (potential) user role
+            const backPath = user.role === 'student' ? 'student-dashboard.html' : 
+                             user.role === 'teacher' ? 'teacher-dashboard.html' : 
+                             user.role === 'hod' ? 'hod-dashboard.html' : 
+                             'student-dashboard.html'; // Default to student dashboard if guest
+
+            document.getElementById('back-btn').addEventListener('click', () => redirect(backPath));
+
 
             if (!requestId) {
                 showToast('No request ID provided.', 'error');

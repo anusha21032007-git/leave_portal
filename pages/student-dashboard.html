@@ -63,16 +63,13 @@
 
     <div id="toast-container"></div>
     <script type="module">
-        import { sessionGuard, handleLogout } from '../js/auth.js';
+        import { handleLogout } from '../js/auth.js';
         import { renderStudentDashboard } from '../js/student.js';
 
-        // 1. Session Guard (Temporarily commented out for development)
-        // sessionGuard('student', 'student-login.html');
-
-        // 2. Render Dashboard
+        // 1. Render Dashboard
         document.addEventListener('DOMContentLoaded', renderStudentDashboard);
 
-        // 3. Logout Handler
+        // 2. Logout Handler
         document.getElementById('logout-btn').addEventListener('click', () => {
             handleLogout('../index.html');
         });
