@@ -57,6 +57,33 @@ function renderRequestHistory(regNo) {
 }
 
 /**
+ * Fetches leave types and populates the dropdown.
+ */
+async function populateRequestTypes() {
+    const selectEl = document.getElementById('requestType');
+    if (!selectEl) return;
+
+    try {
+        const response = await fetch('../data/leaveTypes.json');
+        if (!response.ok) throw new Error('Failed to load leave types.');
+        const leaveTypes = await response.json();
+
+        // Ensure the default "Select Type" option is the first one
+        selectEl.innerHTML = '<option value="">Select Type</option>';
+
+        leaveTypes.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type.name;
+            option.textContent = type.name;
+            selectEl.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error loading leave types:", error);
+        showToast('Could not load request types.', 'error');
+    }
+}
+
+/**
  * Handles the submission of a new leave/OD request.
  * @param {Event} e
  */
@@ -137,6 +164,8 @@ export function initApplyRequestForm() {
     const today = getCurrentDate();
     document.getElementById('fromDate').min = today;
     document.getElementById('toDate').min = today;
+
+    populateRequestTypes(); // Call the new function to load types
 
     const form = document.getElementById('apply-request-form');
     if (form) {
