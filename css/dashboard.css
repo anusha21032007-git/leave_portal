@@ -19,19 +19,19 @@
     flex-shrink: 0;
     transition: transform 0.3s ease-in-out;
     z-index: 40;
-    @apply bg-white dark:bg-card border-r dark:border-gray-800 shadow-xl;
+    @apply bg-white border-r shadow-xl;
 }
 
 .sidebar-header {
-    @apply flex items-center p-4 border-b dark:border-gray-800;
+    @apply flex items-center p-4 border-b;
 }
 
 .sidebar-item {
-    @apply flex items-center px-4 py-3 mx-3 rounded-xl text-gray-700 dark:text-gray-300 transition-colors duration-200 cursor-pointer;
+    @apply flex items-center px-4 py-3 mx-3 rounded-xl text-gray-700 transition-colors duration-200 cursor-pointer;
 }
 
 .sidebar-item:hover {
-    @apply bg-gray-100 dark:bg-gray-800;
+    @apply bg-gray-100;
 }
 
 .sidebar-item.active {
@@ -40,7 +40,7 @@
 }
 
 .sidebar-item.active:hover {
-    background-color: hsl(var(--accent-hue), 70%, 40%);
+    @apply opacity-90;
 }
 
 /* Content Area */
@@ -59,7 +59,7 @@
 
 /* Top Navbar Styles */
 .top-navbar {
-    @apply bg-white dark:bg-card shadow-md sticky top-0 z-30;
+    @apply bg-white shadow-md sticky top-0 z-30;
 }
 
 /* Profile Card Styling */
@@ -72,19 +72,19 @@
 }
 
 .profile-label {
-    @apply text-sm font-medium text-gray-500 dark:text-gray-400;
+    @apply text-sm font-medium text-gray-500;
 }
 
 .profile-field .label {
-    @apply text-sm font-medium text-gray-500 dark:text-gray-400;
+    @apply text-sm font-medium text-gray-500;
 }
 
 .profile-field .value {
-    @apply text-base font-semibold text-[hsl(var(--primary))] dark:text-white;
+    @apply text-base font-semibold text-primary;
 }
 
 .profile-value {
-    @apply text-base font-semibold text-[hsl(var(--primary))] dark:text-white;
+    @apply text-base font-semibold text-primary;
 }
 
 /* Mobile Sidebar Handling */
@@ -114,19 +114,16 @@
 
 /* Utility for icons */
 .icon-btn {
-    @apply p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
+    @apply p-2 rounded-full hover:bg-gray-100 transition-colors;
 }
 
 /* HOD Specific Dashboard Enhancements */
 #dashboard-section .stat-card {
     border: 1px solid rgba(0, 0, 0, 0.05);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    @apply rounded-2xl p-6 bg-white dark:bg-gray-800 transition-all duration-300;
+    @apply rounded-2xl p-6 bg-white transition-all duration-300;
 }
 
-.dark #dashboard-section .stat-card {
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
 
 /* Premium Banner */
 .welcome-banner {

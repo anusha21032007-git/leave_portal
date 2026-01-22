@@ -9,18 +9,18 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
-<body class="bg-[#0f172a] dark:bg-gray-950 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
     <!-- Back button floating -->
     <button id="back-btn"
-        class="fixed top-6 left-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-md z-50">
+        class="fixed top-6 left-6 p-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-full transition-all shadow-md z-50">
         <i data-lucide="arrow-left" class="w-6 h-6"></i>
     </button>
 
     <!-- Main Card (Reference Style) -->
     <div
-        class="w-full max-w-2xl bg-[#1e293b] text-white rounded-2xl shadow-2xl overflow-hidden border border-gray-700 animate-in fade-in zoom-in duration-300 relative">
+        class="w-full max-w-2xl bg-white text-slate-900 rounded-2xl shadow-xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-300 relative">
         <!-- Close button decoration -->
-        <div class="absolute top-4 right-4 cursor-pointer opacity-50 hover:opacity-100 transition-opacity"
+        <div class="absolute top-4 right-4 cursor-pointer opacity-30 hover:opacity-100 transition-opacity"
             onclick="document.getElementById('back-btn').click()">
             <i data-lucide="x" class="w-6 h-6"></i>
         </div>
@@ -28,9 +28,9 @@
         <div class="p-8 space-y-8">
             <!-- Header Section -->
             <header class="space-y-1">
-                <h1 id="detail-title" class="text-2xl font-bold tracking-tight">Request Details</h1>
-                <p class="text-gray-400 text-sm font-medium">From: <span id="detail-student-name"
-                        class="text-white"></span></p>
+                <h1 id="detail-title" class="text-2xl font-bold tracking-tight text-slate-900">Request Details</h1>
+                <p class="text-slate-500 text-sm font-medium">From: <span id="detail-student-name"
+                        class="text-slate-900"></span></p>
             </header>
 
             <!-- Details Content -->
@@ -50,12 +50,12 @@
                 <!-- Description -->
                 <section>
                     <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-2">Description</h3>
-                    <p id="detail-reason" class="text-lg text-gray-300 leading-relaxed"></p>
+                    <p id="detail-reason" class="text-lg text-slate-600 leading-relaxed"></p>
                 </section>
 
                 <!-- Status -->
                 <section>
-                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Current Status</h3>
+                    <h3 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">Current Status</h3>
                     <div id="status-badge-custom"
                         class="w-full py-2 px-6 rounded-full text-center font-bold text-lg transition-colors">
                         <!-- Status text injected here -->
@@ -64,7 +64,7 @@
             </div>
 
             <!-- Footer Meta -->
-            <div class="pt-8 border-t border-gray-700/50 flex flex-wrap gap-6 text-xs text-gray-500">
+            <div class="pt-8 border-t border-slate-100 flex flex-wrap gap-6 text-xs text-slate-400">
                 <div class="flex items-center gap-1.5">
                     <i data-lucide="hash" class="w-3 h-3"></i>
                     <span id="detail-request-id"></span>
@@ -85,11 +85,11 @@
 
             <!-- Action Panels and Export -->
             <div class="flex flex-col gap-4">
-                <div id="action-panel" class="hidden pt-6 mt-6 border-t border-gray-700">
-                    <h3 id="action-title" class="text-lg font-bold mb-4 text-indigo-400">Action Required</h3>
+                <div id="action-panel" class="hidden pt-6 mt-6 border-t border-slate-100">
+                    <h3 id="action-title" class="text-lg font-bold mb-4 text-indigo-600">Action Required</h3>
                     <div class="space-y-4">
                         <textarea id="remark" placeholder="Enter remark..."
-                            class="w-full p-4 bg-gray-800 border-2 border-transparent focus:border-indigo-500 rounded-xl text-white outline-none h-24 resize-none"></textarea>
+                            class="w-full p-4 bg-slate-50 border-2 border-slate-200 focus:border-indigo-500 rounded-xl text-slate-900 outline-none h-24 resize-none"></textarea>
                         <div id="action-buttons" class="flex flex-wrap gap-3"></div>
                     </div>
                 </div>
@@ -167,11 +167,11 @@
 
             // Stylize badge based on status
             if (request.status.includes('Approved')) {
-                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-green-950/50 text-green-400 border border-green-500/50";
+                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-green-100 text-green-700 border border-green-200";
             } else if (request.status.includes('Rejected')) {
-                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-red-950/50 text-red-400 border border-red-500/50";
+                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-red-100 text-red-700 border border-red-200";
             } else {
-                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-yellow-950/50 text-yellow-400 border border-yellow-500/50";
+                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-yellow-100 text-yellow-700 border border-yellow-200";
             }
         }
 

@@ -26,7 +26,6 @@ export function renderHodDashboard() {
     renderProfileDetails(user);
     setupNavigation(user);
     setupMobileMenu();
-    setupThemeToggle();
     setupProfileEditForm(user);
     setupHistoryFilter(user);
 
@@ -303,28 +302,6 @@ function setupMobileMenu() {
     }
 }
 
-function setupThemeToggle() {
-    const toggle = document.getElementById('theme-toggle');
-    const icon = document.getElementById('theme-icon');
-
-    // Initial State
-    if (document.documentElement.classList.contains('dark')) {
-        icon.setAttribute('data-lucide', 'sun');
-    }
-
-    if (toggle) {
-        toggle.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-            // Re-render icon
-            icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        });
-    }
-
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-}
 
 /**
  * Handles HOD action (Approve or Reject) on a request.
