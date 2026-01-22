@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,27 +11,33 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* Custom styles for icons */
-        .icon-size { width: 1.25rem; height: 1.25rem; }
+        .icon-size {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
     </style>
 </head>
+
 <body class="bg-gray-50 dark:bg-gray-900">
     <div class="dashboard-layout">
-        
+
         <!-- Backdrop for Mobile Menu -->
         <div id="backdrop" class="backdrop lg:hidden"></div>
 
         <!-- Left Sidebar Navigation -->
         <aside id="sidebar" class="sidebar">
             <div class="sidebar-header">
-                <div id="sidebar-avatar" class="w-10 h-10 bg-[hsl(var(--accent))] rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">
+                <div id="sidebar-avatar"
+                    class="w-10 h-10 bg-[hsl(var(--accent))] rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">
                     <span id="sidebar-avatar-initial">S</span>
                 </div>
                 <div class="flex flex-col">
-                    <span id="sidebar-student-name" class="font-bold text-lg text-[hsl(var(--primary))] dark:text-white"></span>
+                    <span id="sidebar-student-name"
+                        class="font-bold text-lg text-[hsl(var(--primary))] dark:text-white"></span>
                     <span class="text-xs text-gray-500 dark:text-gray-400">Student Portal</span>
                 </div>
             </div>
-            
+
             <nav class="space-y-2 p-2">
                 <div class="sidebar-item active" data-view="dashboard">
                     <i data-lucide="layout-dashboard" class="icon-size mr-3"></i>
@@ -57,21 +64,22 @@
 
         <!-- Main Content Area -->
         <div class="main-content">
-            
+
             <!-- Top Navbar -->
             <header class="top-navbar">
                 <div class="container-layout flex justify-between items-center py-3">
-                    
+
                     <!-- Hamburger Menu (Mobile) -->
                     <button id="menu-toggle" class="lg:hidden icon-btn">
                         <i data-lucide="menu" class="icon-size"></i>
                     </button>
 
-                    <h2 class="text-xl font-semibold text-[hsl(var(--primary))] dark:text-white flex-grow ml-4 lg:ml-0" id="main-title">Dashboard Overview</h2>
-                    
+                    <h2 class="text-xl font-semibold text-[hsl(var(--primary))] dark:text-white flex-grow ml-4 lg:ml-0"
+                        id="main-title">Dashboard Overview</h2>
+
                     <!-- Action Icons -->
                     <div class="flex items-center space-x-3">
-                        
+
                         <!-- Theme Toggle -->
                         <button id="theme-toggle" class="icon-btn">
                             <i data-lucide="sun" class="icon-size"></i>
@@ -83,7 +91,8 @@
                         </button>
 
                         <!-- Logout -->
-                        <button id="logout-btn" class="icon-btn text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+                        <button id="logout-btn"
+                            class="icon-btn text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
                             <i data-lucide="log-out" class="icon-size"></i>
                         </button>
                     </div>
@@ -92,34 +101,79 @@
 
             <!-- Dynamic Content Sections -->
             <div class="container-layout py-8">
-                
+
                 <!-- 1. Dashboard Summary Section (Default View) -->
                 <section id="dashboard-section" class="content-section">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Placeholder Stat Cards -->
                         <div class="card-shadow p-5 border-l-4 border-blue-500">
                             <p class="text-sm text-gray-500">Total Requests</p>
-                            <p class="text-3xl font-bold mt-1">12</p>
+                            <p class="text-3xl font-bold mt-1" id="stat-total">0</p>
                         </div>
                         <div class="card-shadow p-5 border-l-4 border-yellow-500">
                             <p class="text-sm text-gray-500">Pending</p>
-                            <p class="text-3xl font-bold mt-1 text-yellow-600">3</p>
+                            <p class="text-3xl font-bold mt-1 text-yellow-600" id="stat-pending">0</p>
                         </div>
                         <div class="card-shadow p-5 border-l-4 border-green-500">
                             <p class="text-sm text-gray-500">Approved</p>
-                            <p class="text-3xl font-bold mt-1 text-green-600">8</p>
+                            <p class="text-3xl font-bold mt-1 text-green-600" id="stat-approved">0</p>
                         </div>
                         <div class="card-shadow p-5 border-l-4 border-red-500">
                             <p class="text-sm text-gray-500">Rejected</p>
-                            <p class="text-3xl font-bold mt-1 text-red-600">1</p>
+                            <p class="text-3xl font-bold mt-1 text-red-600" id="stat-rejected">0</p>
                         </div>
                     </div>
-                    
-                    <div class="mt-8 card-shadow p-6">
-                        <h3 class="text-xl font-semibold mb-4">Quick Actions</h3>
-                        <div class="flex flex-wrap gap-4">
-                            <button onclick="document.querySelector('.sidebar-item[data-view=\'leave-request\']').click()" class="btn-primary px-6 py-2">Apply Leave</button>
-                            <button onclick="document.querySelector('.sidebar-item[data-view=\'od-request\']').click()" class="btn-secondary px-6 py-2">Apply OD</button>
+
+                    <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Quick Actions -->
+                        <div
+                            class="lg:col-span-1 card-shadow p-6 bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-900/10 dark:to-gray-800">
+                            <h3 class="text-xl font-bold mb-4 flex items-center">
+                                <i data-lucide="zap" class="w-5 h-5 mr-2 text-indigo-500"></i>
+                                Quick Actions
+                            </h3>
+                            <div class="space-y-3">
+                                <button
+                                    onclick="document.querySelector('.sidebar-item[data-view=\'leave-request\']').click()"
+                                    class="w-full btn-primary flex items-center justify-center py-3">
+                                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Apply Leave
+                                </button>
+                                <button
+                                    onclick="document.querySelector('.sidebar-item[data-view=\'od-request\']').click()"
+                                    class="w-full btn-secondary flex items-center justify-center py-3">
+                                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i> Apply OD
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Recent Requests Table -->
+                        <div class="lg:col-span-2 card-shadow overflow-hidden">
+                            <div
+                                class="p-6 border-b dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+                                <h3 class="text-xl font-bold">Recent Requests</h3>
+                                <button onclick="document.querySelector('.sidebar-item[data-view=\'status\']').click()"
+                                    class="text-sm font-semibold text-[hsl(var(--accent))] hover:underline">View
+                                    All</button>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead>
+                                        <tr class="bg-gray-50 dark:bg-gray-800/80 border-b dark:border-gray-700">
+                                            <th class="p-4 text-xs font-bold uppercase tracking-wider text-gray-500">ID
+                                            </th>
+                                            <th class="p-4 text-xs font-bold uppercase tracking-wider text-gray-500">
+                                                Type</th>
+                                            <th class="p-4 text-xs font-bold uppercase tracking-wider text-gray-500">
+                                                Dates</th>
+                                            <th class="p-4 text-xs font-bold uppercase tracking-wider text-gray-500">
+                                                Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-requests-body">
+                                        <!-- Populated via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -127,45 +181,142 @@
                 <!-- 2. Leave Request Section -->
                 <section id="leave-request-section" class="content-section hidden">
                     <div class="w-full max-w-3xl mx-auto card-shadow p-8">
-                        <h3 class="text-2xl font-bold mb-6">Leave Application Form</h3>
-                        <p class="text-gray-500">Form content goes here...</p>
+                        <h3 class="text-2xl font-bold mb-6 border-b pb-3 dark:border-gray-700">Leave Application Form
+                        </h3>
+                        <form id="leave-form" class="space-y-6">
+                            <div>
+                                <label for="leaveSubject"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
+                                <input type="text" id="leaveSubject" name="subject" required
+                                    placeholder="Brief reason for leave"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="leaveFromDate"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From
+                                        Date</label>
+                                    <input type="date" id="leaveFromDate" name="fromDate" required
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                                </div>
+                                <div>
+                                    <label for="leaveToDate"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To
+                                        Date</label>
+                                    <input type="date" id="leaveToDate" name="toDate" required
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="leaveDays"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Number of
+                                    Days</label>
+                                <input type="text" id="leaveDays" name="numDays" readonly value="0"
+                                    class="w-full p-3 bg-gray-100 dark:bg-gray-700 border border-gray-300 rounded-lg dark:border-gray-600 dark:text-white transition-shadow cursor-not-allowed">
+                            </div>
+                            <div>
+                                <label for="leaveReason"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                                <textarea id="leaveReason" name="reason" rows="4" required
+                                    placeholder="Provide detailed explanation for your leave request..."
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow"></textarea>
+                            </div>
+                            <button type="submit" class="w-full btn-primary py-3">Submit Leave Request</button>
+                        </form>
                     </div>
                 </section>
 
                 <!-- 3. OD Request Section -->
                 <section id="od-request-section" class="content-section hidden">
                     <div class="w-full max-w-3xl mx-auto card-shadow p-8">
-                        <h3 class="text-2xl font-bold mb-6">On Duty (OD) Application Form</h3>
-                        <p class="text-gray-500">Form content goes here...</p>
+                        <h3 class="text-2xl font-bold mb-6 border-b pb-3 dark:border-gray-700">On Duty (OD) Application
+                            Form</h3>
+                        <form id="od-form" class="space-y-6">
+                            <div>
+                                <label for="odSubject"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
+                                <input type="text" id="odSubject" name="subject" required
+                                    placeholder="Event Name or Purpose of OD"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="odFromDate"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">From
+                                        Date</label>
+                                    <input type="date" id="odFromDate" name="fromDate" required
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                                </div>
+                                <div>
+                                    <label for="odToDate"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">To
+                                        Date</label>
+                                    <input type="date" id="odToDate" name="toDate" required
+                                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow">
+                                </div>
+                            </div>
+                            <div>
+                                <label for="odDuration"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Total
+                                    Duration (Days)</label>
+                                <input type="text" id="odDuration" name="numDays" readonly value="0"
+                                    class="w-full p-3 bg-gray-100 dark:bg-gray-700 border border-gray-300 rounded-lg dark:border-gray-600 dark:text-white transition-shadow cursor-not-allowed">
+                            </div>
+                            <div>
+                                <label for="odReason"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                                <textarea id="odReason" name="reason" rows="4" required
+                                    placeholder="Provide details about the event, location, and your participation..."
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow"></textarea>
+                            </div>
+                            <button type="submit" class="w-full btn-primary py-3">Submit OD Request</button>
+                        </form>
                     </div>
                 </section>
 
-                <!-- 4. Request Status Section -->
                 <section id="status-section" class="content-section hidden">
                     <div class="card-shadow p-8">
-                        <h3 class="text-2xl font-bold mb-6">My Request History</h3>
-                        <p class="text-gray-500">Table content goes here...</p>
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                            <h3 class="text-2xl font-bold">My Request History</h3>
+                            <div
+                                class="flex items-center gap-2 bg-gray-50 dark:bg-gray-800 p-1.5 rounded-xl border dark:border-gray-700">
+                                <label for="status-filter"
+                                    class="text-xs font-bold text-gray-400 uppercase tracking-widest ml-2">Filter:</label>
+                                <select id="status-filter"
+                                    class="bg-transparent text-sm font-bold text-gray-700 dark:text-gray-200 outline-none pr-2 cursor-pointer">
+                                    <option value="all">All Requests</option>
+                                    <option value="Approved by HOD">Accepted</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="history-container">
+                            <p class="text-gray-500">Loading history...</p>
+                        </div>
                     </div>
                 </section>
 
                 <!-- 5. Profile Section (Detailed Card) -->
                 <section id="profile-section" class="content-section hidden">
                     <div class="w-full max-w-4xl mx-auto card-shadow p-8">
-                        
+
                         <!-- Header and Avatar -->
                         <div class="flex items-center border-b pb-6 mb-6 dark:border-gray-700">
-                            <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 text-3xl font-bold mr-4">
+                            <div
+                                class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-300 text-3xl font-bold mr-4">
                                 <i data-lucide="user" class="w-8 h-8"></i>
                             </div>
                             <div>
-                                <h3 id="profile-card-name" class="text-3xl font-extrabold text-[hsl(var(--primary))] dark:text-white"></h3>
+                                <h3 id="profile-card-name"
+                                    class="text-3xl font-extrabold text-[hsl(var(--primary))] dark:text-white"></h3>
                                 <p class="text-lg text-gray-600 dark:text-gray-400">Student Profile Details</p>
                             </div>
                         </div>
 
                         <!-- Profile Details Grid -->
                         <div class="profile-card-grid">
-                            
+
                             <div class="profile-field">
                                 <span class="profile-label">Register Number</span>
                                 <span id="profile-card-regno" class="profile-value"></span>
@@ -174,7 +325,7 @@
                                 <span class="profile-label">Academic Year</span>
                                 <span id="profile-card-year" class="profile-value"></span>
                             </div>
-                            
+
                             <div class="profile-field">
                                 <span class="profile-label">Current Semester</span>
                                 <span id="profile-card-semester" class="profile-value"></span>
@@ -199,17 +350,18 @@
                             </div>
                             <div class="profile-field">
                                 <span class="profile-label">Total Leaves Taken (Current Year)</span>
-                                <span id="profile-card-leaves-taken" class="profile-value text-red-600 dark:text-red-400"></span>
+                                <span id="profile-card-leaves-taken"
+                                    class="profile-value text-red-600 dark:text-red-400"></span>
                             </div>
                         </div>
                     </div>
                 </section>
 
             </div>
-            
+
             <!-- Footer (Outside container-layout to span full width of main-content) -->
             <footer class="py-8 mt-auto w-full text-center text-sm text-gray-500 dark:text-gray-400">
-                © 2026 CSE Department. All rights reserved.
+                © 2026 CSE-CYBER SECURITY Department. All rights reserved.
             </footer>
         </div>
     </div>
@@ -225,4 +377,5 @@
     </script>
     <script type="module" src="../js/student-dashboard.js"></script>
 </body>
+
 </html>

@@ -1,101 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Details | Leave Portal</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
-    <header class="bg-white dark:bg-card shadow-md sticky top-0 z-10">
-        <div class="container-layout flex justify-between items-center py-4">
-            <h1 class="text-2xl font-bold text-[hsl(var(--accent))]">Request Details</h1>
-            <button id="back-btn" class="btn-secondary text-sm">Back to Dashboard</button>
+
+<body class="bg-[#0f172a] dark:bg-gray-950 min-h-screen flex items-center justify-center p-4">
+    <!-- Back button floating -->
+    <button id="back-btn"
+        class="fixed top-6 left-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all backdrop-blur-md z-50">
+        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+    </button>
+
+    <!-- Main Card (Reference Style) -->
+    <div
+        class="w-full max-w-2xl bg-[#1e293b] text-white rounded-2xl shadow-2xl overflow-hidden border border-gray-700 animate-in fade-in zoom-in duration-300 relative">
+        <!-- Close button decoration -->
+        <div class="absolute top-4 right-4 cursor-pointer opacity-50 hover:opacity-100 transition-opacity"
+            onclick="document.getElementById('back-btn').click()">
+            <i data-lucide="x" class="w-6 h-6"></i>
         </div>
-    </header>
 
-    <main class="container-layout mt-8">
-        <div class="w-full max-w-4xl mx-auto card-shadow">
-            <div id="request-content">
-                <h2 class="text-3xl font-bold mb-4 text-[hsl(var(--primary))] dark:text-white">Request <span id="detail-request-id"></span></h2>
-                
-                <div id="status-badge-container" class="mb-6"></div>
+        <div class="p-8 space-y-8">
+            <!-- Header Section -->
+            <header class="space-y-1">
+                <h1 id="detail-title" class="text-2xl font-bold tracking-tight">Request Details</h1>
+                <p class="text-gray-400 text-sm font-medium">From: <span id="detail-student-name"
+                        class="text-white"></span></p>
+            </header>
 
-                <!-- Request Info Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 dark:text-gray-300 border-b pb-4 mb-4">
-                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Student Name:</span> <span id="detail-student-name"></span></p>
-                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Reg No:</span> <span id="detail-student-regno"></span></p>
-                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Department:</span> <span id="detail-dept"></span></p>
-                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Request Type:</span> <span id="detail-request-type"></span></p>
-                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Date Range:</span> <span id="detail-date-range"></span></p>
-                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">No. of Days:</span> <span id="detail-no-of-days"></span></p>
-                    <p><span class="font-semibold text-[hsl(var(--primary))] dark:text-white">Applied On:</span> <span id="detail-applied-date"></span></p>
+            <!-- Details Content -->
+            <div class="space-y-8">
+                <!-- Dates -->
+                <section>
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-2">Dates</h3>
+                    <p id="detail-date-summary" class="text-xl font-bold"></p>
+                </section>
+
+                <!-- Subject/Purpose -->
+                <section>
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-2">Subject/Purpose</h3>
+                    <p id="detail-subject" class="text-xl font-bold"></p>
+                </section>
+
+                <!-- Description -->
+                <section>
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-2">Description</h3>
+                    <p id="detail-reason" class="text-lg text-gray-300 leading-relaxed"></p>
+                </section>
+
+                <!-- Status -->
+                <section>
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-3">Current Status</h3>
+                    <div id="status-badge-custom"
+                        class="w-full py-2 px-6 rounded-full text-center font-bold text-lg transition-colors">
+                        <!-- Status text injected here -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Footer Meta -->
+            <div class="pt-8 border-t border-gray-700/50 flex flex-wrap gap-6 text-xs text-gray-500">
+                <div class="flex items-center gap-1.5">
+                    <i data-lucide="hash" class="w-3 h-3"></i>
+                    <span id="detail-request-id"></span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <i data-lucide="calendar" class="w-3 h-3"></i>
+                    <span id="detail-applied-date"></span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <i data-lucide="layers" class="w-3 h-3"></i>
+                    <span id="detail-dept"></span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <i data-lucide="user-check" class="w-3 h-3"></i>
+                    <span id="detail-student-regno"></span>
+                </div>
+            </div>
+
+            <!-- Action Panels and Export -->
+            <div class="flex flex-col gap-4">
+                <div id="action-panel" class="hidden pt-6 mt-6 border-t border-gray-700">
+                    <h3 id="action-title" class="text-lg font-bold mb-4 text-indigo-400">Action Required</h3>
+                    <div class="space-y-4">
+                        <textarea id="remark" placeholder="Enter remark..."
+                            class="w-full p-4 bg-gray-800 border-2 border-transparent focus:border-indigo-500 rounded-xl text-white outline-none h-24 resize-none"></textarea>
+                        <div id="action-buttons" class="flex flex-wrap gap-3"></div>
+                    </div>
                 </div>
 
-                <!-- Reason -->
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-[hsl(var(--primary))] dark:text-white">Reason for Request</h3>
-                    <p id="detail-reason" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border dark:border-gray-700"></p>
-                </div>
-
-                <!-- Teacher Action History -->
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-[hsl(var(--primary))] dark:text-white">Teacher Action</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Action Date: <span id="detail-teacher-action-date">N/A</span></p>
-                    <p id="detail-teacher-remark" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border dark:border-gray-700 italic text-gray-600 dark:text-gray-400">No remark provided.</p>
-                </div>
-
-                <!-- HOD Action History -->
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-[hsl(var(--primary))] dark:text-white">HOD Action</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Action Date: <span id="detail-hod-action-date">N/A</span></p>
-                    <p id="detail-hod-remark" class="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border dark:border-gray-700 italic text-gray-600 dark:text-gray-400">No remark provided.</p>
-                </div>
-
-                <!-- Action Panel (Visible only to Teacher/HOD when pending) -->
-                <div id="action-panel" class="mt-8 pt-6 border-t dark:border-gray-700 hidden">
-                    <h3 class="text-2xl font-bold mb-4 text-red-600 dark:text-red-400" id="action-title"></h3>
-                    
-                    <form id="action-form" class="space-y-4">
-                        <div>
-                            <label for="remark" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Remark (Required for Reject/Forward)</label>
-                            <textarea id="remark" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-[hsl(var(--ring))] focus:border-[hsl(var(--ring))] dark:bg-gray-800 dark:border-gray-700 dark:text-white transition-shadow"></textarea>
-                        </div>
-                        
-                        <div id="action-buttons" class="flex flex-wrap gap-4">
-                            <!-- Buttons injected by JS -->
-                        </div>
-                    </form>
+                <div id="export-container" class="hidden">
+                    <button id="export-json-btn"
+                        class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-xl shadow-indigo-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        Export as JSON
+                    </button>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <div id="toast-container"></div>
+
     <script type="module">
-        import { getCurrentUser } from '../js/storage.js'; // Use getCurrentUser from storage
-        import { getRequestById } from '../js/storage.js';
-        import { formatDate, renderStatusBadge, showToast, redirect } from '../js/utils.js';
+        import { getCurrentUser, getRequestById } from '../js/storage.js';
+        import { formatDate, showToast, redirect } from '../js/utils.js';
         import { handleTeacherAction } from '../js/teacher.js';
         import { handleHodAction } from '../js/hod.js';
-
-        const SHORT_REQUEST_DAYS = 2;
 
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const requestId = urlParams.get('id');
-            
-            // Use a placeholder user if none is logged in, to allow viewing details
-            const user = getCurrentUser() || { role: 'guest' }; 
 
-            // Determine back button path based on the (potential) user role
-            const backPath = user.role === 'student' ? 'student-dashboard.html' : 
-                             user.role === 'teacher' ? 'teacher-dashboard.html' : 
-                             user.role === 'hod' ? 'hod-dashboard.html' : 
-                             'student-dashboard.html'; // Default to student dashboard if guest
+            let user = getCurrentUser();
+            if (!user) user = { name: 'Guest', role: 'student' };
+
+            const backPath = user.role === 'student' ? 'student-dashboard.html' :
+                user.role === 'teacher' ? 'teacher-dashboard.html' :
+                    'hod-dashboard.html';
 
             document.getElementById('back-btn').addEventListener('click', () => redirect(backPath));
-
 
             if (!requestId) {
                 showToast('No request ID provided.', 'error');
@@ -104,49 +133,45 @@
             }
 
             const request = getRequestById(requestId);
-
             if (!request) {
                 showToast('Request not found.', 'error');
                 redirect(backPath);
                 return;
             }
 
-            renderRequestDetails(request);
+            renderRefinedDetails(request);
             renderActionPanel(request, user);
+            setupExport(request);
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         });
 
-        function renderRequestDetails(request) {
+        function renderRefinedDetails(request) {
+            const titleEl = document.getElementById('detail-title');
+            titleEl.textContent = `${request.requestType} Request Details`;
+
+            document.getElementById('detail-student-name').textContent = request.studentName || 'Unknown';
             document.getElementById('detail-request-id').textContent = request.requestId;
-            document.getElementById('status-badge-container').innerHTML = renderStatusBadge(request.status);
-            document.getElementById('detail-student-name').textContent = request.studentName;
-            document.getElementById('detail-student-regno').textContent = request.studentRegNo;
-            document.getElementById('detail-dept').textContent = request.dept;
-            document.getElementById('detail-request-type').textContent = request.requestType;
-            document.getElementById('detail-date-range').textContent = `${formatDate(request.fromDate)} to ${formatDate(request.toDate)}`;
-            document.getElementById('detail-no-of-days').textContent = request.noOfDays;
+
+            const dateStr = `${formatDate(request.fromDate)} to ${formatDate(request.toDate)} (${request.noOfDays} days)`;
+            document.getElementById('detail-date-summary').textContent = dateStr;
+
+            document.getElementById('detail-subject').textContent = request.subject || 'No Subject';
+            document.getElementById('detail-reason').textContent = request.reason || 'No description provided.';
             document.getElementById('detail-applied-date').textContent = formatDate(request.appliedDate);
-            document.getElementById('detail-reason').textContent = request.reason;
+            document.getElementById('detail-dept').textContent = request.dept || 'N/A';
+            document.getElementById('detail-student-regno').textContent = request.studentRegNo || request.regNo || 'N/A';
 
-            // Remarks
-            const teacherRemarkEl = document.getElementById('detail-teacher-remark');
-            const hodRemarkEl = document.getElementById('detail-hod-remark');
-            const teacherDateEl = document.getElementById('detail-teacher-action-date');
-            const hodDateEl = document.getElementById('detail-hod-action-date');
+            const statusBadge = document.getElementById('status-badge-custom');
+            statusBadge.textContent = request.status;
 
-            if (request.teacherRemark) {
-                teacherRemarkEl.textContent = request.teacherRemark;
-                teacherRemarkEl.classList.remove('italic', 'text-gray-600', 'dark:text-gray-400');
-            }
-            if (request.teacherActionDate) {
-                teacherDateEl.textContent = formatDate(request.teacherActionDate);
-            }
-
-            if (request.hodRemark) {
-                hodRemarkEl.textContent = request.hodRemark;
-                hodRemarkEl.classList.remove('italic', 'text-gray-600', 'dark:text-gray-400');
-            }
-            if (request.hodActionDate) {
-                hodDateEl.textContent = formatDate(request.hodActionDate);
+            // Stylize badge based on status
+            if (request.status.includes('Approved')) {
+                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-green-950/50 text-green-400 border border-green-500/50";
+            } else if (request.status.includes('Rejected')) {
+                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-red-950/50 text-red-400 border border-red-500/50";
+            } else {
+                statusBadge.className = "w-full py-2 px-6 rounded-full text-center font-bold text-lg bg-yellow-950/50 text-yellow-400 border border-yellow-500/50";
             }
         }
 
@@ -154,49 +179,52 @@
             const actionPanel = document.getElementById('action-panel');
             const actionButtonsContainer = document.getElementById('action-buttons');
             const actionTitle = document.getElementById('action-title');
-            const remarkInput = document.getElementById('remark');
 
-            actionButtonsContainer.innerHTML = '';
-            actionPanel.classList.add('hidden');
+            if ((user.role === 'teacher' && (request.status === "Pending" || request.status === "Pending Teacher Approval")) ||
+                (user.role === 'hod' && request.status === "Forwarded to HOD")) {
 
-            let buttons = [];
-            let handler;
-            
-            // Only show action panel if the user is Teacher/HOD AND the request is pending their specific approval step
-            if (user.role === 'teacher' && request.status === "Pending Teacher Approval") {
                 actionPanel.classList.remove('hidden');
-                actionTitle.textContent = 'Teacher Action Required';
-                handler = handleTeacherAction;
-                
-                buttons.push({ action: 'reject', text: 'Reject Request', color: 'bg-red-600 hover:bg-red-700' });
+                const isHod = user.role === 'hod';
+                actionTitle.textContent = isHod ? 'HOD Final Decision' : 'Teacher Verification';
 
-                if (request.noOfDays <= SHORT_REQUEST_DAYS) {
-                    buttons.push({ action: 'approve', text: 'Approve Request', color: 'bg-green-600 hover:bg-green-700' });
-                } else {
-                    buttons.push({ action: 'forward', text: 'Forward to HOD', color: 'bg-blue-600 hover:bg-blue-700' });
-                }
+                const handler = isHod ? handleHodAction : handleTeacherAction;
+                const buttons = isHod ? [
+                    { action: 'approve', text: 'Approve & Finalize', color: 'bg-green-600 hover:bg-green-700' },
+                    { action: 'reject', text: 'Reject Request', color: 'bg-red-600 hover:bg-red-700' }
+                ] : [
+                    { action: 'approve', text: 'Quick Approve', color: 'bg-green-600 hover:bg-green-700' },
+                    { action: 'forward', text: 'Forward to HOD', color: 'bg-indigo-600 hover:bg-indigo-700' },
+                    { action: 'reject', text: 'Reject Request', color: 'bg-red-600 hover:bg-red-700' }
+                ];
 
-            } else if (user.role === 'hod' && request.status === "Forwarded to HOD") {
-                actionPanel.classList.remove('hidden');
-                actionTitle.textContent = 'HOD Final Approval Required';
-                handler = handleHodAction;
-
-                buttons.push({ action: 'reject', text: 'Reject Request', color: 'bg-red-600 hover:bg-red-700' });
-                buttons.push({ action: 'approve', text: 'Final Approve', color: 'bg-green-600 hover:bg-green-700' });
-            }
-
-            buttons.forEach(({ action, text, color }) => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.textContent = text;
-                button.className = `px-6 py-3 rounded-xl font-semibold text-white transition-colors shadow-md ${color}`;
-                button.addEventListener('click', () => {
-                    const remark = remarkInput.value;
-                    handler(request.requestId, action, remark);
+                buttons.forEach(({ action, text, color }) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = `flex-1 px-4 py-3 rounded-xl font-bold text-white transition-all shadow-lg ${color}`;
+                    btn.textContent = text;
+                    btn.onclick = () => handler(request.requestId, action, document.getElementById('remark').value);
+                    actionButtonsContainer.appendChild(btn);
                 });
-                actionButtonsContainer.appendChild(button);
-            });
+            }
+        }
+
+        function setupExport(request) {
+            const exportContainer = document.getElementById('export-container');
+            const exportBtn = document.getElementById('export-json-btn');
+
+            if (request.status === "Approved by HOD") {
+                exportContainer.classList.remove('hidden');
+                exportBtn.onclick = () => {
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(request, null, 2));
+                    const downloadAnchorNode = document.createElement('a');
+                    downloadAnchorNode.setAttribute("href", dataStr);
+                    downloadAnchorNode.setAttribute("download", `request_${request.requestId}.json`);
+                    document.body.appendChild(downloadAnchorNode);
+                    downloadAnchorNode.click();
+                    downloadAnchorNode.remove();
+                    showToast('Exporting request as JSON...', 'success');
+                };
+            }
         }
     </script>
 </body>
-</html>

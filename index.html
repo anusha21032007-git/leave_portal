@@ -1,33 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Department Leave & OD Portal</title>
+    <title>Login | Leave & OD Portal</title>
     <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col items-center justify-center p-4">
-    <div class="w-full max-w-md card-shadow">
-        <h1 class="text-4xl font-extrabold text-[hsl(var(--primary))] dark:text-white mb-4 text-center">
-            Leave & OD Portal
-        </h1>
-        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8 text-center">
-            Select your role to view the dashboard.
-        </p>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+            animation: slideUp 0.5s ease-out;
+        }
 
-        <div class="space-y-4">
-            <a href="pages/student-dashboard.html" class="block w-full btn-primary py-3 text-lg">
-                Student Dashboard
-            </a>
-            <a href="pages/teacher-dashboard.html" class="block w-full btn-primary py-3 text-lg">
-                Teacher Dashboard
-            </a>
-            <a href="pages/hod-dashboard.html" class="block w-full btn-primary py-3 text-lg">
-                HOD Dashboard
-            </a>
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .role-tab {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-tab.active {
+            border-bottom: 3px solid hsl(var(--accent));
+            color: hsl(var(--accent));
+        }
+
+        .auth-tab {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background-color: hsl(var(--accent));
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+    <div class="auth-card card-shadow overflow-hidden">
+        <!-- Logo/Title -->
+        <div class="p-8 text-center bg-[hsl(var(--primary))] text-white">
+            <h1 class="text-3xl font-extrabold mb-1">Leave & OD Portal</h1>
+            <p class="text-blue-100 opacity-80">Department Management System</p>
+        </div>
+
+        <!-- Role Selector -->
+        <div class="flex border-b dark:border-gray-700 bg-white dark:bg-gray-800">
+            <div data-role="student"
+                class="role-tab flex-1 py-4 text-center font-bold text-sm uppercase tracking-wider active">Student</div>
+            <div data-role="teacher"
+                class="role-tab flex-1 py-4 text-center font-bold text-sm uppercase tracking-wider">Teacher</div>
+            <div data-role="hod" class="role-tab flex-1 py-4 text-center font-bold text-sm uppercase tracking-wider">HOD
+            </div>
+        </div>
+
+        <div class="p-8 bg-white dark:bg-gray-800">
+            <!-- Auth Type Toggle (Hidden for Students) -->
+            <div id="auth-type-container" class="flex p-1 bg-gray-100 dark:bg-gray-700 rounded-xl mb-6 hidden">
+                <div data-type="login" class="auth-tab flex-1 py-2 text-center rounded-lg font-semibold active">Login
+                </div>
+                <div data-type="signup" class="auth-tab flex-1 py-2 text-center rounded-lg font-semibold">Sign Up</div>
+            </div>
+
+            <h2 id="form-title" class="text-2xl font-bold mb-6 text-center">Student Login</h2>
+
+            <!-- Universal Form -->
+            <form id="auth-form" class="space-y-4">
+                <input type="hidden" name="role" id="role-input" value="student">
+                <input type="hidden" name="type" id="type-input" value="login">
+
+                <div id="name-field" class="hidden">
+                    <label class="block text-sm font-medium mb-1">Full Name</label>
+                    <div class="relative">
+                        <i data-lucide="user" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+                        <input type="text" name="name" placeholder="Enter your full name"
+                            class="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                </div>
+
+                <div>
+                    <label id="identity-label" class="block text-sm font-medium mb-1">Email Address</label>
+                    <div class="relative">
+                        <i data-lucide="mail" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+                        <input type="text" name="identity" id="identity-input" required placeholder="Enter your email"
+                            class="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                </div>
+
+                <div id="dept-field" class="hidden">
+                    <label class="block text-sm font-medium mb-1">Department</label>
+                    <div class="relative">
+                        <i data-lucide="book-open" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+                        <input type="text" name="dept" placeholder="Enter Department (e.g., CSE)"
+                            class="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Password</label>
+                    <div class="relative">
+                        <i data-lucide="lock" class="absolute left-3 top-3 w-5 h-5 text-gray-400"></i>
+                        <input type="password" name="password" id="password-input" required placeholder="••••••••"
+                            class="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full btn-primary py-3 text-lg font-bold shadow-lg shadow-blue-500/20">
+                    Continue
+                </button>
+            </form>
         </div>
     </div>
 
     <div id="toast-container"></div>
+
+    <script type="module">
+        import { initAuthPage } from './js/auth.js';
+        document.addEventListener('DOMContentLoaded', initAuthPage);
+    </script>
 </body>
+
 </html>

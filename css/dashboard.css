@@ -9,10 +9,16 @@
 
 /* Sidebar Styles */
 .sidebar {
-    width: 260px; /* Fixed width */
+    width: 260px;
+    /* Fixed width */
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
     flex-shrink: 0;
     transition: transform 0.3s ease-in-out;
-    z-index: 20;
+    z-index: 40;
     @apply bg-white dark:bg-card border-r dark:border-gray-800 shadow-xl;
 }
 
@@ -29,18 +35,26 @@
 }
 
 .sidebar-item.active {
-    @apply bg-[hsl(var(--accent))] text-white shadow-md font-semibold;
+    @apply text-white shadow-md font-semibold;
+    background-color: hsl(var(--accent));
 }
 
 .sidebar-item.active:hover {
-    @apply bg-[hsl(var(--accent-hue),_70%,_40%)];
+    background-color: hsl(var(--accent-hue), 70%, 40%);
 }
 
 /* Content Area */
 .main-content {
     flex-grow: 1;
-    padding: 0; /* Padding handled by container-layout inside */
+    padding: 0;
+    /* Padding handled by container-layout inside */
     transition: margin-left 0.3s ease-in-out;
+}
+
+@media (min-width: 1024px) {
+    .main-content {
+        margin-left: 260px;
+    }
 }
 
 /* Top Navbar Styles */
@@ -61,6 +75,14 @@
     @apply text-sm font-medium text-gray-500 dark:text-gray-400;
 }
 
+.profile-field .label {
+    @apply text-sm font-medium text-gray-500 dark:text-gray-400;
+}
+
+.profile-field .value {
+    @apply text-base font-semibold text-[hsl(var(--primary))] dark:text-white;
+}
+
 .profile-value {
     @apply text-base font-semibold text-[hsl(var(--primary))] dark:text-white;
 }
@@ -72,6 +94,7 @@
         height: 100%;
         transform: translateX(-100%);
     }
+
     .sidebar.open {
         transform: translateX(0);
     }
@@ -92,4 +115,35 @@
 /* Utility for icons */
 .icon-btn {
     @apply p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors;
+}
+
+/* HOD Specific Dashboard Enhancements */
+#dashboard-section .stat-card {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    @apply rounded-2xl p-6 bg-white dark:bg-gray-800 transition-all duration-300;
+}
+
+.dark #dashboard-section .stat-card {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Premium Banner */
+.welcome-banner {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.5);
+    @apply overflow-hidden relative;
+}
+
+.welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
 }

@@ -1,64 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HOD Dashboard | Leave Portal</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .icon-size {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900">
-    <header class="bg-white dark:bg-card shadow-md sticky top-0 z-10">
-        <div class="container-layout flex justify-between items-center py-4">
-            <h1 class="text-2xl font-bold text-[hsl(var(--accent))]">HOD Portal</h1>
-            <button id="logout-btn" class="btn-secondary text-sm">Logout</button>
-        </div>
-    </header>
 
-    <main class="container-layout mt-8">
-        <h2 class="text-3xl font-extrabold text-[hsl(var(--primary))] dark:text-white mb-6">
-            Welcome, <span id="hod-name"></span>
-        </h2>
-        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Department: <span id="hod-dept"></span>
-        </p>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div class="dashboard-layout">
+        <!-- Backdrop for Mobile -->
+        <div id="backdrop" class="backdrop lg:hidden"></div>
 
-        <!-- Forwarded Requests Table -->
-        <div class="card-shadow overflow-x-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-semibold">Requests Forwarded for HOD Approval (<span id="forwarded-count">0</span>)</h3>
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div id="sidebar-avatar"
+                    class="w-10 h-10 bg-[hsl(var(--accent))] rounded-full flex items-center justify-center text-white font-bold text-lg mr-3">
+                    <span id="sidebar-avatar-initial">H</span>
+                </div>
+                <div class="flex flex-col">
+                    <span id="sidebar-hod-name"
+                        class="font-bold text-lg text-[hsl(var(--primary))] dark:text-white"></span>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">HOD Portal</span>
+                </div>
             </div>
-            
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-800">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Request ID</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied On</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="forwarded-requests-body" class="bg-white dark:bg-card divide-y divide-gray-200 dark:divide-gray-700">
-                    <!-- Request rows will be inserted here by JS -->
-                </tbody>
-            </table>
+
+            <nav class="space-y-2 p-2">
+                <div class="sidebar-item active" data-view="dashboard">
+                    <i data-lucide="layout-dashboard" class="icon-size mr-3"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="sidebar-item" data-view="history">
+                    <i data-lucide="history" class="icon-size mr-3"></i>
+                    <span>History</span>
+                </div>
+                <div class="sidebar-item" data-view="profile">
+                    <i data-lucide="user" class="icon-size mr-3"></i>
+                    <span>Profile</span>
+                </div>
+                <div class="pt-4 mt-4 border-t dark:border-gray-800">
+                    <button id="logout-btn"
+                        class="sidebar-item w-full text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
+                        <i data-lucide="log-out" class="icon-size mr-3"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-nav">
+                <div class="flex items-center">
+                    <button id="menu-btn"
+                        class="lg:hidden p-2 mr-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <h2 id="main-title" class="text-xl font-bold text-[hsl(var(--primary))] dark:text-white">Dashboard
+                        Overview</h2>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i data-lucide="moon" id="theme-icon" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <!-- 1. Dashboard Section -->
+                <section id="dashboard-section" class="content-section">
+                    <div class="welcome-banner mb-8">
+                        <h1 class="text-3xl font-extrabold text-white mb-2">Welcome Back, <span
+                                id="welcome-name">HOD</span>!</h1>
+                        <p class="text-blue-100">You have <span id="pending-count-badge"
+                                class="font-bold underline">0</span> requests awaiting your final approval.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div
+                            class="stat-card group hover:scale-[1.02] transition-transform cursor-pointer !bg-gradient-to-br from-yellow-50 to-white dark:from-yellow-900/10 dark:to-gray-800">
+                            <div class="flex items-center justify-between mb-4">
+                                <span
+                                    class="text-sm font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-wider">Awaiting
+                                    HOD Action</span>
+                                <div
+                                    class="p-3 bg-yellow-100 dark:bg-yellow-900/30 rounded-xl text-yellow-600 dark:text-yellow-500 shadow-sm group-hover:rotate-12 transition-transform">
+                                    <i data-lucide="clock" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-4xl font-black text-gray-900 dark:text-white"
+                                    id="total-pending-stat">0</span>
+                                <span class="ml-2 text-xs text-gray-400">Requests</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="stat-card group hover:scale-[1.02] transition-transform cursor-pointer !bg-gradient-to-br from-green-50 to-white dark:from-green-900/10 dark:to-gray-800">
+                            <div class="flex items-center justify-between mb-4">
+                                <span
+                                    class="text-sm font-bold text-green-600 dark:text-green-400 uppercase tracking-wider">Approved
+                                    By You</span>
+                                <div
+                                    class="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl text-green-600 dark:text-green-500 shadow-sm group-hover:scale-110 transition-transform">
+                                    <i data-lucide="check-check" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-4xl font-black text-gray-900 dark:text-white"
+                                    id="total-approved-stat">0</span>
+                                <span class="ml-2 text-xs text-gray-400">Requests</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="stat-card group hover:scale-[1.02] transition-transform cursor-pointer !bg-gradient-to-br from-red-50 to-white dark:from-red-900/10 dark:to-gray-800">
+                            <div class="flex items-center justify-between mb-4">
+                                <span
+                                    class="text-sm font-bold text-red-600 dark:text-red-400 uppercase tracking-wider">Rejected
+                                    By You</span>
+                                <div
+                                    class="p-3 bg-red-100 dark:bg-red-900/30 rounded-xl text-red-600 dark:text-red-500 shadow-sm group-hover:-rotate-12 transition-transform">
+                                    <i data-lucide="x-circle" class="w-6 h-6"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline">
+                                <span class="text-4xl font-black text-gray-900 dark:text-white"
+                                    id="total-forwarded-stat">0</span>
+                                <span class="ml-2 text-xs text-gray-400">Requests</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold mb-4">Requests Awaiting Final Approval</h3>
+                    <div class="card-shadow overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50">
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider">ID</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider">Student</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider">Type</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider">Days</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider">Applied Date</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="forwarded-requests-body">
+                                <!-- JS items here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 2. History Section -->
+                <section id="history-section" class="content-section hidden">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+                        <h3 class="text-2xl font-bold">Request History</h3>
+                        <div
+                            class="flex items-center space-x-2 bg-white dark:bg-gray-800 p-2 rounded-lg border dark:border-gray-700 shadow-sm">
+                            <i data-lucide="filter" class="w-4 h-4 text-gray-400"></i>
+                            <select id="history-status-filter"
+                                class="bg-transparent border-none text-sm focus:ring-0 cursor-pointer">
+                                <option value="all">All Request Status</option>
+                                <option value="Forwarded to HOD">Awaiting Final Approval</option>
+                                <option value="Approved by HOD">Approved</option>
+                                <option value="Rejected by HOD">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="history-content-container" class="card-shadow overflow-x-auto">
+                        <div id="unified-history-container"></div>
+                    </div>
+                </section>
+
+                <!-- 3. Profile Section -->
+                <section id="profile-section" class="content-section hidden">
+                    <div class="max-w-3xl mx-auto card-shadow p-8">
+                        <div
+                            class="flex flex-col md:flex-row md:items-center justify-between border-b pb-6 mb-6 dark:border-gray-700 gap-4">
+                            <div class="flex items-center">
+                                <div
+                                    class="w-16 h-16 bg-[hsl(var(--accent))] rounded-full flex items-center justify-center text-white text-3xl font-bold mr-4">
+                                    <i data-lucide="user" class="w-8 h-8"></i>
+                                </div>
+                                <div>
+                                    <h3 id="profile-hod-name"
+                                        class="text-3xl font-extrabold text-[hsl(var(--primary))] dark:text-white"></h3>
+                                    <p class="text-lg text-gray-600 dark:text-gray-400">HOD Profile Details</p>
+                                </div>
+                            </div>
+                            <button id="edit-profile-btn"
+                                class="btn-secondary px-6 py-2 flex items-center justify-center">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Profile
+                            </button>
+                        </div>
+                        <div class="profile-card-grid">
+                            <div class="profile-field">
+                                <span class="label">Department</span>
+                                <span class="value" id="profile-hod-dept"></span>
+                            </div>
+                            <div class="profile-field">
+                                <span class="label">Email Address</span>
+                                <span class="value" id="profile-hod-email"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 text-center text-gray-400 text-sm">
+                        &copy; 2026 <span id="footer-dept"></span> Department. All rights reserved.
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-card w-full max-w-md rounded-2xl shadow-2xl overflow-hidden p-6">
+            <h3 class="text-xl font-bold mb-4">Edit Your Profile</h3>
+            <form id="edit-profile-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Full Name</label>
+                    <input type="text" name="name" id="edit-profile-name" required
+                        class="w-full p-2 border rounded-lg dark:bg-gray-800">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Email ID</label>
+                    <input type="email" name="email" id="edit-profile-email" required
+                        class="w-full p-2 border rounded-lg dark:bg-gray-800">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Department</label>
+                    <input type="text" name="dept" id="edit-profile-dept" required
+                        class="w-full p-2 border rounded-lg dark:bg-gray-800">
+                </div>
+                <div class="flex space-x-3 mt-6">
+                    <button type="button" id="close-profile-modal" class="flex-1 btn-secondary py-2">Cancel</button>
+                    <button type="submit" class="flex-1 btn-primary py-2">Save Changes</button>
+                </div>
+            </form>
         </div>
-    </main>
+    </div>
 
     <div id="toast-container"></div>
+
     <script type="module">
-        import { handleLogout } from '../js/auth.js';
         import { renderHodDashboard } from '../js/hod.js';
 
-        // 1. Render Dashboard
-        document.addEventListener('DOMContentLoaded', renderHodDashboard);
-
-        // 2. Logout Handler
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            handleLogout('../index.html');
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHodDashboard();
         });
     </script>
 </body>
+
 </html>
